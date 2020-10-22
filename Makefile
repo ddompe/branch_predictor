@@ -1,16 +1,16 @@
 .PHONY: clean all run
 
-S?=2
-BP?=2
-GH?=2
-PH?=2
+S?=16
+BP?=0
+GH?=5
+PH?=3
 
 all: branch
 
 run: branch
 	gunzip -c branch-trace-gcc.trace.gz | ./branch -s ${S} -bp ${BP} -gh ${GH} -ph ${PH}
 
-branch: src/main.o
+branch: src/main.o src/bimodal.o
 	gcc -o $@ $^
 
 clean:

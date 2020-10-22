@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <getopt.h>
+#include "sim.h"
 
 static struct option long_options[] = {
     {"s",  required_argument, 0,  's' },
@@ -22,6 +23,7 @@ int main(int argc, char **argv) {
     int bp;
     int gh;
     int ph;
+    struct results results;
 
     printf("Cache Predictor\n");
     int long_index =0;
@@ -43,6 +45,26 @@ int main(int argc, char **argv) {
     }
 
     printf("Parameters: s %d, bp %d, gh %d, ph %d\n", s, bp, gh, ph);
+
+    switch (bp) {
+        case 0:
+            bimodal_simulation(s, &results);
+            break;
+        default:
+            printf("Unsupported simulation mode!\n\n");
+            break;
+    }
+
+    printf("Number of branches: %d\n", results.number_branches);
+    printf("Correct prediction of taken: %d\n", results.predicted_branch_right);
+    printf("Incorrect prediction of taken: %d\n", results.predicted_branch_wrong);
+    printf("Correct prediction of NOT taken: %d\n", results.predicted_miss_right);
+    printf("Incorrect prediction of NOT taken: %d\n", results.predicted_miss_wrong);
+    int good_predictions = results.predicted_branch_right + results.predicted_miss_right;
+    double percentage = good_predictions * 100.0 / results.number_branches;
+    printf("Percenage of correct predictions %f\n", percentage);
+
+    printf("\n");
 
     return 0;
 }
