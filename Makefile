@@ -5,6 +5,9 @@ BP?=0
 GH?=5
 PH?=3
 
+hello:
+	echo HELLO WORLD
+
 all: branch
 
 run: branch
